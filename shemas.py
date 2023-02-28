@@ -3,10 +3,9 @@ from typing import List
 from typing import Dict
 
 
-class Categories(BaseModel):
-    list_with_catories = { 1: 'Sativa', 2: "Indica", 3: 'Hybrid'}
+class CategoriesStrain(BaseModel):
     id: int
-    categories: list = list_with_catories
+    categories = {1: 'Sativa', 2: "Indica", 3: 'Hybrid'}
 
 
 class Effects(BaseModel):
@@ -16,11 +15,17 @@ class Effects(BaseModel):
 
 
 class Strain(BaseModel):
-    id: int
+    strain_id: int
     name: str
     slug_name: str
     description: str
     reviewsCount: int
     rating: int
-    category: str
+    categories: CategoriesStrain
     countByEffects: List[Effects]
+
+
+class User(BaseModel):
+    name: str
+    email: str
+    user_name: str
