@@ -2,8 +2,13 @@ from typing import List
 
 import uvicorn
 from fastapi import FastAPI, Query, Path, Body
-from shemas import Strain, CategoriesStrain, User
+from shemas import Strain, CategoriesStrain, User, StrainResult
 import zlib
+import hashlib
+
+# encoding GeeksforGeeks using md5 hash
+# function
+
 
 app = FastAPI()
 
@@ -18,9 +23,25 @@ def get_list_categories():
     return {1: 'Sativa', 2: "Indica", 3: 'Hybrid'}
 
 
-@app.post('/api/strain/write')
+@app.post('/api/strain/write', response_model=Strain, response_model_exclude_unset=True,
+          response_model_exclude={"description"})
 def post_strain(strain: Strain):
+    """
+    string_starin_slug_hash = strain.slug_name
+    result = hashlib.md5(string_starin_slug_hash.encode()).hexdigest()
+    """
+    """
+    Разобраться с реализацией response_model
+    @app.post('/api/strain/write', response_model=StrainResult, response_model_exclude={"description"})
+    def post_strain(strain: Strain):
+        string_starin_slug_hash = strain.slug_name
+        result = hashlib.md5(string_starin_slug_hash.encode()).hexdigest()
+        return {'data': StrainResult(**strain.dict(), id=3)}
+        """
     return {'data': strain}
+    # return {'data': StrainResult(**strain.dict(), id=3)}
+
+
 
 
 @app.get('/api/strain/')

@@ -1,12 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, validator, Field
 from typing import List
 from typing import Dict
+import hashlib
 
 
 class CategoriesStrain(BaseModel):
-    id: int
-    categories = {1: 'Sativa', 2: "Indica", 3: 'Hybrid'}
-
+    pass
 
 class Effects(BaseModel):
     count: int
@@ -14,18 +13,34 @@ class Effects(BaseModel):
     tag: dict = {"name": "Anxious", "type": "Negative"}
 
 
+
 class Strain(BaseModel):
-    strain_id: int
+    categories = {1: 'Sativa', 2: "Indica", 3: 'Hybrid'}
+    # strain_id: int
     name: str
     slug_name: str
     description: str
     reviewsCount: int
     rating: int
-    categories: CategoriesStrain
+    categories: dict
     countByEffects: List[Effects]
 
 
+class StrainResult(Strain):
+    result: int = 2
+
+
 class User(BaseModel):
-    name: str
+    name: str = Field(max_length=25)
     email: str
     user_name: str
+    age: int = Field(..., gt=18, lt=70)
+
+    """
+    Один из видов валидации
+    @validator('age')
+    def check_age(cls, value):
+        if value < 18:
+            raise ValueError('only over eighteen')
+        return value
+    """
