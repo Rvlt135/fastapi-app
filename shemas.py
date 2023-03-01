@@ -1,5 +1,5 @@
 from pydantic import BaseModel, validator, Field
-from typing import List
+from typing import List, Optional
 from typing import Dict
 import hashlib
 
@@ -7,30 +7,47 @@ import hashlib
 class CategoriesStrain(BaseModel):
     pass
 
+
 class Effects(BaseModel):
+
     count: int
     name: str
     tag: dict = {"name": "Anxious", "type": "Negative"}
 
 
+class StrainOutBySlugName(BaseModel):
 
-class Strain(BaseModel):
     categories = {1: 'Sativa', 2: "Indica", 3: 'Hybrid'}
     # strain_id: int
     name: str
     slug_name: str
-    description: str
+    rating: Optional[int] = None
+    categories: dict = categories
+    countByEffects: List[Effects]
+    description: Optional[str] = None
+    strain_id: str
+
+
+class StrainInBySlugName(BaseModel):
+
+    categories = {1: 'Sativa', 2: "Indica", 3: 'Hybrid'}
+    # strain_id: int
+    name: str
+    slug_name: str
+    description: Optional[str] = None
     reviewsCount: int
-    rating: int
+    rating: Optional[int] = None
     categories: dict
     countByEffects: List[Effects]
 
 
-class StrainResult(Strain):
+class StrainResult(StrainInBySlugName):
+
     result: int = 2
 
 
 class User(BaseModel):
+
     name: str = Field(max_length=25)
     email: str
     user_name: str
