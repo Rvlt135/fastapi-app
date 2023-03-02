@@ -16,7 +16,7 @@ fake_categories_by_strain = [
         [{"strain_id": "5be0181985e474c239bb01244", "strain_slug": "blue-dream"}, ]},
 ]
 
-fake_categories = [
+fake_categories_list = [
     {"id": 1, "category": "Indica"},
     {"id": 2, "category": "Sativa"},
     {"id": 3, "category": "Hybrid"},
@@ -80,7 +80,7 @@ def get_strain(strain_id: int):
 
 @app.get("/api/categories", response_model=List[CategoriesList])
 def get_categories():
-    return fake_strain_list
+    return fake_categories_list
 
 
 @app.get('/api/categories/byStrain', response_model=CategoriesStrain)
