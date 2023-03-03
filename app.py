@@ -86,6 +86,7 @@ def get_strain_list():
 @app.get('/api/strain/', response_model=StrainDetails)
 def get_strain(strain_id: int):
     for strain in fake_strain_list:
+        # strain_dict = strain.dict()
         if strain.get("id") == strain_id:
             return strain
 
