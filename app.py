@@ -1,4 +1,10 @@
-from fastapi import FastAPI, Query, Body, Depends
+from fastapi import FastAPI, Query, Body, Depends, encoders
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import ValidationError
+from fastapi.responses import JSONResponse
+from starlette import status
+from starlette.requests import Request
+
 from shemas import CategoriesStrain, Strain, CategoriesTypeList, StrainDetails, CategoriesList
 import zlib
 import hashlib
@@ -8,6 +14,13 @@ from database import Session
 app = FastAPI(
     title="Fast-api app"
 )
+
+
+@app.exception_handler(ValidationError)
+async def validation_exception_handler(request: Request, exc: ValidationError):
+    return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                        content=jsonable_encoder({"detail": exc.errors()})
+                        )
 
 fake_categories_by_strain = [
     {"id": 1, "category_name": "Indica", "strain_id": "5be017ac85e474c239bb0ad5", "strain_slug": "purple-punch"},
@@ -73,7 +86,6 @@ def get_strain_list():
 @app.get('/api/strain/', response_model=StrainDetails)
 def get_strain(strain_id: int):
     for strain in fake_strain_list:
-        # strain_dict = strain.dict()
         if strain.get("id") == strain_id:
             return strain
 

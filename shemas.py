@@ -1,6 +1,6 @@
 from enum import Enum
 
-from pydantic import BaseModel, validator, Field
+from pydantic import BaseModel, validator, Field, root_validator
 from typing import List, Optional, Union
 from typing import Dict
 import hashlib
@@ -44,11 +44,11 @@ class Strain(BaseModel):
 
 
 class StrainDetails(BaseModel):
-    id: int
-    slug_name: str
-    name: str
-    category: CategoriesType
-    hash_id: str
+    id: Optional[int]= None
+    slug_name: Optional[str] = None
+    name: Optional[str] = None
+    category: Optional[CategoriesType] = None
+    hash_id: Optional[str] = None
 """
 class EffectStrain(CategoriesStrain):
     pass
