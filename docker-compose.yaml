@@ -4,6 +4,8 @@ services:
   postgres:
     env_file:
       - ".env"
+    restart: always
+    network_mode: "host"
     container_name: postgres_db_app
     image: postgres
     environment:
@@ -15,13 +17,14 @@ services:
 
     ports:
       - "5433:5432"
-    restart: always
 
   pgadmin:
-    container_name: pgadmin_db_app
     image: dpage/pgadmin4:latest
+    restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     ports:
         - "5050:80"
+    depends_on:
+      - postgres
