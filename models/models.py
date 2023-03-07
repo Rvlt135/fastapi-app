@@ -1,45 +1,27 @@
-import datetime
-from sqlalchemy import MetaData, Column, Integer, String, ForeignKey, Table, JSON, TIMESTAMP
-import sqlalchemy as sa
-from alembic import op
+from datetime import datetime
+
+from sqlalchemy import MetaData, Table, Column, Integer, String, TIMESTAMP, ForeignKey, JSON, Boolean
 
 metadata = MetaData()
 
-roles = Table("roles",
-              metadata,
-              Column("id", Integer, primary_key=True),
-              Column("name", String, nullable=False),
-              Column("permissions", JSON),
-              )
-
-user = Table(
-    "users",
+role = Table(
+    "role",
     metadata,
     Column("id", Integer, primary_key=True),
-    Column("user_mane", String, nullable=False,),
-    Column("password", String, nullable=False,),
-    Column("email", String, nullable=False,),
-    Column("registred_data", TIMESTAMP),
-    Column("role_id", Integer, ForeignKey("roles.id")),
-
+    Column("name", String, nullable=False),
+    Column("permissions", JSON),
 )
 
-
-"""
-categories_list = Table(
-    "categories",
-    sa.Column("id", Integer, primary_key=True),
-    sa.Column("category", String, nullable=False, )
-
+user = Table(
+    "user",
+    metadata,
+    Column('id', Integer, primary_key=True),
+    Column('email', String, nullable=False),
+    Column('user_name', String),
+    Column("registered_at", TIMESTAMP, default=datetime.utcnow),
+    Column("role_id", Integer, ForeignKey(role.c.id)),
+    Column("hashed_password", String, nullable=False),
+    Column("is_active", Boolean, default=True, nullable=False),
+    Column("is_superuser", Boolean, default=False, nullable=False),
+    Column("is_verified", Boolean, default=False, nullable=False),
 )
-
-strains = Table(
-    "strains",
-    sa.Column("id", Integer, primary_key=True),
-    sa.Column("slug_name", String, nullable=False,),
-    sa.Column("name", String, nullable=False,),
-    # Column("created_strains", TIMESTAMP, default=datetime.utcnow()),
-    sa.Column("category", String, nullable=False, ),
-    sa.Column("hash_id", String, sa.Text(), ForeignKey("categories.category"), nullable=False, ),
-)
-"""
