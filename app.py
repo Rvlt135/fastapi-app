@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import ValidationError
 from fastapi.responses import JSONResponse
@@ -37,6 +37,16 @@ app.include_router(
     tags=["auth"],
 )
 
+
+current_user = fastapi_users.current_user()
+@app.get("/protected-route")
+def protected_route(user: User = Depends(current_user)):
+    return f"Hello, {user.email}"
+
+
+@app.get("/unprotected-route")
+def protected_route():
+    return f"Hello, test"
 
 '''
 @app.exception_handler(ValidationError)
