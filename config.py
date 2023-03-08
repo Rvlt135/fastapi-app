@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER_DOCKER}:{POSTGRES_PORT}/{POSTGRES_DB}"
     ASYNC_DATABASE_URL = f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER_DOCKER}:{POSTGRES_PORT}/{POSTGRES_DB}"
 
+
 class Secrets(Settings):
     secret_key_auth_jwt = "SECRET"
 

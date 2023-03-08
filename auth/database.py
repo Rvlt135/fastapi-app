@@ -21,7 +21,7 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     user_name = Column(String, nullable=False)
     registered_data = Column(TIMESTAMP, default=datetime.utcnow)
     role_id = Column(Integer, ForeignKey(role.c.id))
-    password: str = Column(String(length=1024), nullable=False)
+    hashed_password: str = Column(String(length=1024), nullable=False)
     is_active: bool = Column(Boolean, default=True, nullable=False)
     is_superuser: bool = Column(Boolean, default=False, nullable=False)
     is_verified: bool = Column(Boolean, default=False, nullable=False)
@@ -29,6 +29,13 @@ class User(SQLAlchemyBaseUserTable[int], Base):
 
 engine = create_async_engine(settings.ASYNC_DATABASE_URL)
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
+
+
+'''async def create_db_and_tables():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+'''
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:

@@ -38,6 +38,7 @@ app.include_router(
 )
 
 
+'''
 @app.exception_handler(ValidationError)
 async def validation_exception_handler(request: Request, exc: ValidationError):
     return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -125,7 +126,7 @@ def get_categories_by_strains(get_id: int):
     for category_id in fake_categories_by_strain:
         if category_id.get("id") == get_id:
             return category_id
-
+'''
 
 """
 Примеры использования Path(), Query()
