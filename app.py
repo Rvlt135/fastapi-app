@@ -8,7 +8,6 @@ from starlette.requests import Request
 
 from auth.schemas import UserRead, UserCreate
 from shemas import CategoriesStrain, Strain, StrainDetails, CategoriesList
-# import zlib
 import hashlib
 from typing import List
 from auth.database import User
@@ -18,6 +17,12 @@ from auth.manager import get_user_manager
 app = FastAPI(
     title="Fast-api app"
 )
+
+
+@app.get('/healthcheck')
+def health_check():
+    return {"status": "OK"}
+
 
 fastapi_users = FastAPIUsers[User, int](
     get_user_manager,
@@ -39,16 +44,9 @@ app.include_router(
 
 
 current_user = fastapi_users.current_user()
-@app.get("/protected-route")
-def protected_route(user: User = Depends(current_user)):
-    return f"Hello, {user.email}"
 
 
-@app.get("/unprotected-route")
-def protected_route():
-    return f"Hello, test"
 
-'''
 @app.exception_handler(ValidationError)
 async def validation_exception_handler(request: Request, exc: ValidationError):
     return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -85,20 +83,9 @@ fake_strain_list = [
 
 clear_strain_list = []
 
-"""def get_db():
-    db = Session()
-    try:
-        yield db
-    finally:
-        db.close()"""
 
 
-@app.get('/healtcheck')
-def healtcheck():
-    return {"status": "OK"}
-
-
-@app.post('/api/strain/add')
+@app.post('/api/strain/add', tags=["strain"])
 def add_strain(strain: List[Strain]):
     """Create strain and hashed hash_id"""
     for it in strain:
@@ -111,12 +98,12 @@ def add_strain(strain: List[Strain]):
     return fake_strain_list
 
 
-@app.get('/api/strain/list', response_model=List[Strain])
+@app.get('/api/strain/list', response_model=List[Strain], tags=["strain"])
 def get_strain_list():
     return fake_strain_list
 
 
-@app.get('/api/strain/', response_model=StrainDetails)
+@app.get('/api/strain/', response_model=StrainDetails, tags=["strain"])
 def get_strain(strain_id: int):
     for strain in fake_strain_list:
         # strain_dict = strain.dict()
@@ -124,38 +111,34 @@ def get_strain(strain_id: int):
             return strain
 
 
-@app.get("/api/categories", response_model=List[CategoriesList])
+@app.get("/api/categories", response_model=List[CategoriesList], tags=["strain"])
 def get_categories():
     return fake_categories_list
 
 
-@app.get('/api/categories/byStrain', response_model=CategoriesStrain)
+@app.get('/api/categories/byStrain', response_model=CategoriesStrain, tags=["strain"])
 def get_categories_by_strains(get_id: int):
     """Принимает get_id возвращает несколько вариантов strains old and new"""
 
     for category_id in fake_categories_by_strain:
         if category_id.get("id") == get_id:
             return category_id
-'''
+
 
 """
-Примеры использования Path(), Query()
-@app.get('/api/{test}')
-def get_test_name(test: int = Path(..., gt=1, le=20), pages: int = Query(None, gt=2, le=20, description="test test")):
-    return {"pk": test, "pages": pages}
+@app.get("/protected-route")
+def protected_route(user: User = Depends(current_user)):
+    return f"Hello, {user.email}"
 
-@app.get('/api/strain/{id}')
-def get_strain_name(name: List[str] =
-                    Query(None, min_length=2,
-                          max_length=1000,
-                          description='query find name strain')):
-    return name
 
-@app.post('/api/user', description="create user")
-def create_user(data: str, user: User = Body(..., embed=True)):
-    # Любые данные, которые мы хотим хешировать, представляются в виде байтовой строки
-    # Хеш всегда одинаковый для одних и тех же данных
-    byte_data = b'{data}'
-    user_id = zlib.crc32(byte_data)
-    return {"create user": user_id, "user": user}
-    """
+@app.get("/unprotected-route")
+def protected_route():
+    return f"Hello, test
+    
+def get_db():
+    db = Session()
+    try:
+        yield db
+    finally:
+        db.close() 
+"""
