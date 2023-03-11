@@ -1,6 +1,6 @@
 import psycopg2 as pgsql
 from psycopg2 import OperationalError
-from config import settings
+from src.config import settings
 try:
     # host local port docker
     connection = pgsql.connect(database=settings.POSTGRES_DB,

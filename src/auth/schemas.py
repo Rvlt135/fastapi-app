@@ -1,7 +1,5 @@
-import uuid
 from typing import Optional
 
-import shemas
 from fastapi_users import schemas
 
 

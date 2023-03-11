@@ -1,13 +1,12 @@
 from datetime import datetime
 from enum import Enum
 
-from pydantic import BaseModel, validator, Field, root_validator
-from typing import List, Optional, Union
-from typing import Dict
-import hashlib
+from pydantic import BaseModel, Field
+from typing import List, Optional
 
 
 class CategoriesType(Enum):
+    """use from postgres"""
     category_sativa = "Sativa"
     category_indica = "Indica"
     category_hybrid = "Hybrid"
@@ -35,23 +34,6 @@ class CategoriesStrain(BaseModel):
     strain_slug: Optional[str]
     strains: Optional[List[StrainsByCategories]]
 
-
-class Strain(BaseModel):
-    id: int = Field(ge=1, default=1)
-    slug_name: str = Field(min_length=6)
-    name: str = Field(min_length=6)
-    # reated_strains: Optional[datetime]
-    category: CategoriesType  # field from CategoriesStrain
-    hash_id: str
-
-
-class StrainDetails(BaseModel):
-    id: Optional[int]= None
-    slug_name: Optional[str] = None
-    name: Optional[str] = None
-    category: Optional[CategoriesType] = None
-    # created_strains: Optional[datetime]  = None
-    hash_id: Optional[str] = None
 """
 class EffectStrain(CategoriesStrain):
     pass

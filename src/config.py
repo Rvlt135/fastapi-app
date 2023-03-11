@@ -4,15 +4,15 @@ from dotenv import load_dotenv
 
 
 from pathlib import Path
-env_path = Path('.') / '.env'
+env_path = Path('..') / '.env'
 load_dotenv(dotenv_path=env_path)
 
 
 class Settings(BaseSettings):
-    server_host: str
+    server_host: str = "127.0.0.1"
     server_port: int = 8000
     POSTGRES_USER: str = os.getenv("POSTGRES_USER")
-    POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+    POSTGRES_PASSWORD: str = os.getenv("POSTGRES_PASSWORD")
     POSTGRES_SERVER_DOCKER: str = os.getenv("POSTGRES_SERVER_DOCKER", "172.26.0.3")
     POSTGRES_SERVER_LOCALHOST: str = os.getenv("POSTGRES_SERVER_LOCALHOST", "localhost")
     POSTGRES_PORT: str = os.getenv("POSTGRES_PORT", 5432)  # default postgres port is 5432
@@ -28,5 +28,5 @@ class Secrets(Settings):
 
 
 settings = Settings(
-    _env_file='.env',
+    _env_file='../.env',
     _env_file_encoding='utf-8')
