@@ -2,24 +2,29 @@ from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-
-from config import Settings
-
 from alembic import context
 
-from models.models import metadata
+from src.config import settings
+from src.auth.models import metadata
 
+import os
+import sys
+
+sys.path.append(os.path.join(sys.path[0], 'src'))
+
+# from src.strains.models import metadata as strain_metadata
+# from src.categories.models import metadata as categories_metadata
+
+# import os
+# import sys
+
+# sys.path.append(os.path.join(sys.path[0], 'src'))
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
 section = config.config_ini_section
-"""section.set_section_option(section, "POSTGRES_SERVER")
-section.set_section_option(section, "POSTGRES_USER", Settings.POSTGRES_USER)
-section.set_section_option(section, "POSTGRES_PASSWORD", Settings.POSTGRES_PASSWORD)
-section.set_section_option(section, "POSTGRES_PORT", Settings.POSTGRES_PORT)
-section.set_section_option(section, "POSTGRES_DB", Settings.POSTGRES_DB)"""
-
+config.set_section_option(section, "ASYNC_DATABASE_URL", settings.ASYNC_DATABASE_URL)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -30,7 +35,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = metadata
+target_metadata = [metadata]
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
