@@ -2,8 +2,8 @@ import uvicorn
 from fastapi import FastAPI
 from src.categories.router import categories_router
 from src.auth.router import router_auth
-from strains.router import strain_router
-from config import settings
+from src.strains.router import strain_router
+from src.config import settings
 
 app = FastAPI(
     title="Fast-api app"
