@@ -4,13 +4,14 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 
-from src.config import settings
-from src.auth.models import metadata
+from config import settings
+from auth.models import metadata as auth_metadata
+from categories.models import metadata as categories_metadata
 
-import os
-import sys
+#import os
+#import sys
 
-sys.path.append(os.path.join(sys.path[0], 'src'))
+#sys.path.append(os.path.join(sys.path[0], 'src'))
 
 # from src.strains.models import metadata as strain_metadata
 # from src.categories.models import metadata as categories_metadata
@@ -35,7 +36,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = [metadata]
+target_metadata = [auth_metadata, categories_metadata]
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

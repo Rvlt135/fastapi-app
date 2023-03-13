@@ -18,8 +18,8 @@ class CategoriesTypeList(BaseModel):
 
 
 class CategoriesList(BaseModel):
-    id: int
-    category: CategoriesType
+    id: Optional[int] = None
+    category_name: Optional[CategoriesType]
 
 
 class StrainsByCategories(BaseModel):

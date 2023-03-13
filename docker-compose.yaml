@@ -3,7 +3,7 @@ version: '3.5'
 services:
   postgres:
     env_file:
-      - ".env"
+      - "src/.env"
     restart: always
     container_name: postgres_db_app
     image: postgres
@@ -22,7 +22,7 @@ services:
     container_name: pg_admin_fastapi
     restart: always
     env_file:
-      - ".env"
+      - "src/.env"
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}

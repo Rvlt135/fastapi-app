@@ -2,8 +2,8 @@ from fastapi import APIRouter
 from .shemas import CategoriesStrain, CategoriesList
 import hashlib
 from typing import List
-from .models import fake_categories_by_strain, fake_categories_list
-
+from .models import fake_categories_by_strain, categories_list
+from .service import get_categories_list
 categories_router = APIRouter(
     prefix='/categories',
     tags=['categories'],
@@ -11,9 +11,9 @@ categories_router = APIRouter(
 )
 
 
-@categories_router.get("/api/categories", response_model=List[CategoriesList])
+@categories_router.get("/api/categories")
 def get_categories():
-    return fake_categories_list
+    return get_categories_list
 
 
 @categories_router.get('/api/categories/byStrain', response_model=CategoriesStrain)
