@@ -1,6 +1,6 @@
 from sqlalchemy import MetaData, Table, Column, Integer, String, TIMESTAMP, ForeignKey, Boolean
 from src.database import Base
-
+from database import async_engine
 
 metadata = MetaData()
 
@@ -19,6 +19,7 @@ class CategoryList(Base):
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     category_name = Column(String, nullable=False)
 
+# metadata.create_all(async_engine) нужно ли здесь это?
 
 fake_categories_by_strain = [
     {"id": 1, "category_name": "Indica", "strain_id": "5be017ac85e474c239bb0ad5", "strain_slug": "purple-punch"},
