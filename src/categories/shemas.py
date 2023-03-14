@@ -17,8 +17,7 @@ class CategoriesTypeList(BaseModel):
     categories_list: List[CategoriesType]
 
 
-class CategoriesList(BaseModel):
-    id: int
+class CategoriesListName(BaseModel):
     category_name: CategoriesType
 
 
